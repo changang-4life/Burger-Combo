@@ -22,7 +22,7 @@ menu = \
         'Cheeseburger': '$6.69',
         'Fries' : '$1.00',
         'Fizzy Drink' : '$1.00',
-        'Total Price' : '8.69'
+        'Total Price' : '$8.69'
     },
     'Super' : {
         'Cheeseburger' : '$6.69',
