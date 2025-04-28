@@ -22,7 +22,7 @@ menu = \
         'Cheeseburger': '$6.69',
         'Fries' : '$1.00',
         'Fizzy Drink' : '$1.00',
-        'Total Price' : '8.69'
+        'Total Price' : '$8.69'
     },
     'Super' : {
         'Cheeseburger' : '$6.69',
@@ -37,6 +37,7 @@ def values_check(price, name, component):
         while True:
             if price is None:
                 main_routine()
+                break
             else:
                 try:
                     float(price)
@@ -51,11 +52,12 @@ def values_check(price, name, component):
         while True:
             if name is None:
                 main_routine()
+                break
             else:
                 name_stripped = name.replace(" ", "")
                 if name_stripped.isalpha() and 3 <= len(name) <= 30:
-                    # if name is completely a string and its length is equal to or
-                    # more than 3, the name is considered valid
+                    # if name is completely a string and its length is
+                    # equal to or more than 3, the name is considered valid
                     return name.title()
                 else:
                     name = easygui.enterbox(f"Please enter a valid name "
@@ -71,6 +73,7 @@ def string_check(name):
     while True:
         if name is None: # user hits cancel while string checking
             main_routine() # goes back to start screen
+            break
         else:
             name_stripped = name.replace(" ", "")
             if name_stripped.isalpha() and 3 <= len(name_stripped) <= 30:
@@ -101,6 +104,7 @@ def add_combo():
             print(type(values))
             print("value is None (if block 1)")
             main_routine()
+            return
 
         if '' in values:
             while '' in values:
@@ -114,6 +118,7 @@ def add_combo():
                     print(type(values))
                     print("value is None (last if block)")
                     main_routine()
+                    break
             print(values)
 
         (input_combo_name, input_item_1, price_1, input_item_2, price_2,
@@ -126,7 +131,8 @@ def add_combo():
         input_item_2 = values_check(False, input_item_2, "side")
         input_item_3 = values_check(False, input_item_3,
             "beverage")
-        input_item_4 = values_check(False, input_item_4, "dessert")
+        input_item_4 = values_check(False, input_item_4,
+            "dessert")
 
         price_1 = values_check(price_1, False, "main course")
         price_2 = values_check(price_2, False, "side")
@@ -177,6 +183,7 @@ def add_combo():
             print(type(values))
             print("value is None (if block 1)")
             main_routine()
+            return
 
         if '' in values:
             while '' in values:
@@ -190,6 +197,7 @@ def add_combo():
                     print(type(values))
                     print("value is None (last if block)")
                     main_routine()
+                    break
             print(values)
 
         (input_combo_name, input_item_1, price_1, input_item_2, price_2,
@@ -265,6 +273,7 @@ def add_combo():
             "Combo Successfully Added!")
 
         main_routine()
+        return
 
     elif confirm == "Remove":
         delete_combo(input_combo_name)
@@ -281,6 +290,7 @@ def search_combo(combo_name):
     while True:
         if combo_name is None:
             main_routine()
+            break
         else:
             found = False
             search_term = combo_name.title()
@@ -307,8 +317,11 @@ def search_combo(combo_name):
                 combo_name = string_check(combo_name)
                 search_combo(combo_name)
                 main_routine()
+                break
 
-            else: main_routine()
+            else:
+                main_routine()
+                break
 
 def delete_combo(combo_name):
     """ Function which allows the user to delete a combo from the menu """
@@ -331,6 +344,7 @@ def delete_combo(combo_name):
 
         else:
             main_routine()
+            return
 
     elif menu == {}:
         easygui.msgbox("There is nothing on the menu yet.",
@@ -348,6 +362,7 @@ def delete_combo(combo_name):
             name = string_check(name)
             delete_combo(name)
             main_routine()
+            return
 
 def print_menu():
     """ Function which allows the user to show the full menu """
@@ -367,8 +382,8 @@ def edit_combo(combo_name):
     """ Function which allows the user to edit details of a combo """
 
     global old_key
-    component_choice = easygui.buttonbox("Please select which part of the "
-        "combo you would like to edit", "Component Choice",
+    component_choice = easygui.buttonbox("Please select which part of the"
+        " combo you would like to edit", "Component Choice",
         choices=["Name", "Food / Drink", "Price"])
 
     og_combo = menu[combo_name]
@@ -404,7 +419,6 @@ def edit_combo(combo_name):
             part_chosen = "dessert"
             print("\nthere is a dessert")
         elif food_item == "Dessert" and len(items) != 6:
-            part_chosen = "dessert"
             print("\nthere is no dessert")
             choice = easygui.buttonbox("There is no dessert in the"
                 f" {combo_name.title()} Combo. Would you like to remove the "
@@ -414,7 +428,10 @@ def edit_combo(combo_name):
                 delete_combo(combo_name)
                 add_combo()
                 main_routine()
-            else: main_routine()
+                return
+            else:
+                main_routine()
+                return
 
         elif food_item == "Main Course":
             part_chosen = "main course"
@@ -481,6 +498,9 @@ def edit_combo(combo_name):
             new_price = easygui.enterbox(
                 f"Please enter a new price for the {combo_name.title()} "
                 "combo","Pricing - Price Choice")
+            if new_price is None:
+                main_routine()
+                break
             try:
                 new_price = float(new_price)
                 break
@@ -533,20 +553,20 @@ def main_routine():
             add_combo()
 
         elif choice == "Search for a Combo":
-            name = easygui.enterbox("Please enter the name of the combo you "
-                "would like to search for", "Combo Name")
+            name = easygui.enterbox("Please enter the name of the combo"
+                " you would like to search for", "Combo Name")
             name = string_check(name)
             search_combo(name)
 
         elif choice == "Edit Combo":
-            name = easygui.enterbox("Please enter the name of the combo you "
-                "would like to edit", "Enter Name")
+            name = easygui.enterbox("Please enter the name of the combo "
+                "you would like to edit", "Enter Name")
             name = string_check(name)
 
             if name.title() not in menu.keys():
                 while name.title() not in menu.keys() or None == name:
-                    """ Simple loop to check whether the name the user chose for 
-                    their new combo is already on the menu """
+                    """ Simple loop to check whether the name the user chose 
+                    for their new combo is already on the menu """
 
                     name = name.title()
 
@@ -564,7 +584,8 @@ def main_routine():
                     name = name.title()
 
                     if name in menu.keys():
-                        print("edit combo: valid - name on menu ") # print check
+                        print("edit combo: valid - name on menu ") # print
+                        # check
                         name = name.title()
                     else: continue
 
